@@ -590,6 +590,17 @@ const buildIndentation = (left = 720) => {
   return indentationFragment;
 };
 
+const buildPStyle = (heading = 'Heading1') => {
+  const pStyleFragment = fragment({
+    namespaceAlias: { w: namespaces.w },
+  })
+    .ele('@w', 'pStyle')
+    .att('@w', 'val', heading)
+    .up();
+
+  return pStyleFragment;
+};
+
 const buildHorizontalAlignment = (horizontalAlignment) => {
   if (horizontalAlignment === 'justify') {
     horizontalAlignment = 'both';
@@ -681,6 +692,11 @@ const buildParagraphProperties = (attributes) => {
             // eslint-disable-next-line no-param-reassign
             delete attributes.backgroundColor;
           }
+          break;
+        case 'heading':
+          const pStyleFragment = buildPStyle(attributes.heading);
+          paragraphPropertiesFragment.import(pStyleFragment);
+          delete attributes.heading;
           break;
         case 'indentation':
           const indentationFragment = buildIndentation(attributes[key].left);
